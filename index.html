@@ -265,7 +265,7 @@
       sessionStorage.setItem('smart_token_url', config.token_endpoint);
 
       // Redirect to Cerner login
-      const redirect = window.location.origin + '/callback';
+      const redirect = 'https://anongorax.github.io/cerner-cti-screenpop/callback/';
       const url = `${authUrl}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirect)}&scope=launch+openid+fhirUser+patient%2FPatient.read+patient%2FEncounter.read+patient%2FAppointment.read+patient%2FMedicationRequest.read+patient%2FMedicationDispense.read&state=${state}&launch=${launch}&aud=${encodeURIComponent(iss)}`;
       window.location.href = url;
     } catch (e) {
