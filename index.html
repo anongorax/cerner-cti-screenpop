@@ -220,6 +220,23 @@
     document.getElementById('call-time').textContent = new Date().toLocaleTimeString();
     const params = new URLSearchParams(window.location.search);
 
+    // MPage launch — PowerChart passes patient context directly in URL
+    if (params.get('PAT_PersonId')) {
+      const patientId   = params.get('PAT_PersonId');
+      const encounterId = params.get('VIS_EncntrId');
+      fhirBase = `https://fhir-ehr-code.cerner.com/r4/${TENANT}`;
+      document.getElementById('call-ani').textContent = `MPage — Patient: ${patientId}`;
+      const patient = await fhirGet(`Patient/${patientId}`);
+      if (patient && patient.resourceType === 'Patient') {
+        renderPatient(patient);
+        loadTabs(patientId);
+        showScreen('main');
+      } else {
+        showError('Could not load patient from PowerChart context.');
+      }
+      return;
+    }
+
     // SMART callback — Cerner redirected back with auth code
     if (params.get('code')) {
       await handleSmartCallback(params);
